@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ItemUpload</title>
+</head>
+<body>
+<body>
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2>Upload Image Example</h2>
+                <form method="post" th:action="@{/item/add}" th:object="${itemDto}"  enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="text" th:field="*{itemName}" placeholder="Enter item name"><br>
+                        <input type="text" th:field="*{itemDescription}" placeholder="Enter item description"><br>
+                        <input type="number" th:field="*{itemPrice}" placeholder="Enter item price"><br>
+                        <input type="number" th:field="*{itemCalories}" placeholder="Enter item calories"><br>
+                        <input type="file" name="image" accept="image/*" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload image</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</body>
+</html>

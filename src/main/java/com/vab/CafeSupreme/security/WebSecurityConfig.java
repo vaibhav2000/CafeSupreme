@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 public class WebSecurityConfig {
@@ -33,7 +34,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/user/register", "/user/login", "/", "/home").permitAll()
+                        auth -> auth.requestMatchers("/**").permitAll()
+//                        auth -> auth.requestMatchers("/user/register", "/user/login", "/", "/home").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/user/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/home", true).permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/home").permitAll());

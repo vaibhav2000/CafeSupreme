@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "user_details")
-public class UserDetails{
+public class UserDetails {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +24,7 @@ public class UserDetails{
     private String password;
     private String role;
     private String mobileNumber;
+
+    @OneToMany(mappedBy = "userDetails")
+    private List<OrderDetails> orderDetailsList;
 }

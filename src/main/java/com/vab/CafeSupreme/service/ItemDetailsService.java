@@ -34,6 +34,10 @@ public class ItemDetailsService {
         return itemRepository.findAll();
     }
 
+    public ItemDetails getSpecificItem(Long itemId) {
+        return itemRepository.findById(itemId).get();
+    }
+
     public void deleteItem(long id) {
         FileManagerUtil.deleteFile(id + "");
         itemRepository.deleteById(id);

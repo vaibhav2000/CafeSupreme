@@ -34,8 +34,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/**").permitAll()
-//                        auth -> auth.requestMatchers("/user/register", "/user/login", "/", "/home").permitAll()
+//                        auth -> auth.requestMatchers("/**").permitAll()
+                        auth -> auth.requestMatchers("/images/**").permitAll().
+                                requestMatchers("/user/register", "/user/login", "/", "/home").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/user/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/home", true).permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/home").permitAll());

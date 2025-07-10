@@ -3,29 +3,58 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ItemUpload</title>
+    <title>REGISTER USER</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<body>
-<section class="my-5">
+<div th:insert="~{template.html :: header}"></div>
+<div class="bg-light py-3 py-md-5">
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <h2>Upload Image Example</h2>
-                <form method="post" th:action="@{/item/add}" th:object="${itemDto}"  enctype="multipart/form-data">
-                    <div class="form-group">
-                        <input type="text" th:field="*{itemName}" placeholder="Enter item name"><br>
-                        <input type="text" th:field="*{itemDescription}" placeholder="Enter item description"><br>
-                        <input type="number" th:field="*{itemPrice}" placeholder="Enter item price"><br>
-                        <input type="number" th:field="*{itemCalories}" placeholder="Enter item calories"><br>
-                        <input type="file" name="image" accept="image/*" class="form-control-file">
+        <div class="row justify-content-md-center">
+            <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
+                <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-5">
+                                <h2 class="h3">Add new item</h2>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Upload image</button>
-                </form>
+                    <form th:action="@{/item/add}" th:object="${itemDto}" method="post" enctype="multipart/form-data">
+                        <div class="row gy-3 gy-md-4 overflow-hidden">
+                            <div class="col-12">
+                                <label for="firstName" class="form-label">Item Name <span class="text-danger">*</span></label>
+								<input type="text" class="form-control" th:field="*{itemName}" placeholder="Enter item name" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="lastName" class="form-label">Description<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{itemDescription}" name="lastName"
+                                       id="lastName" placeholder="Last Name" required>
+                            </div>
+							<div class="col-12">
+							    <label for="firstName" class="form-label">Item price <span class="text-danger">*</span></label>
+								<input type="number" class="form-control"  th:field="*{itemPrice}" placeholder="Enter item price" required>
+							</div>
+							<div class="col-12">
+							    <label for="firstName" class="form-label">Item calories <span class="text-danger">*</span></label>
+								<input type="number" class="form-control"  th:field="*{itemCalories}" placeholder="Enter item calories" required>
+							</div>
+							<div class="col-12">
+							    <label for="firstName" class="form-label">Item image <span class="text-danger">*</span></label>
+								<input type="file" name="image" accept="image/*" class="form-control">
+							</div>
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary" type="submit">Upload item</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</section>
-</body>
+</div>
 </body>
 </html>

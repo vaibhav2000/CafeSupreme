@@ -34,12 +34,19 @@ public class ItemDetailsService {
         return itemRepository.findAll();
     }
 
-    public ItemDetails getSpecificItem(Long itemId) {
+    public ItemDetails getSpecificItem(long itemId) {
         return itemRepository.findById(itemId).get();
     }
 
-    public void deleteItem(long id) {
-        FileManagerUtil.deleteFile(id + "");
-        itemRepository.deleteById(id);
+    public void deleteItem(long itemId) {
+        FileManagerUtil.deleteFile(itemId + "");
+        itemRepository.deleteById(itemId);
+    }
+
+    public void updateItemRating(ItemDetails itemDetails, Integer newRating) {
+        itemDetails.setRatingCounter(itemDetails.getRatingCounter()+1);
+        Double calculatedRating = (itemDetails.getRating() + newRating) / itemDetails.getRatingCounter();
+        itemDetails.setRating(calculatedRating);
+        itemRepository.save(itemDetails);
     }
 }

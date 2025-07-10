@@ -12,8 +12,8 @@
             <a class="navbar-brand" href="/home">Cafe Supreme</a>
             <div class="w-50">
                 <form class="d-flex col-xs-4" th:action="@{/home}" method="get">
-                    <input class="form-control me-2" th:type="text" placeholder="Search" name="query"
-                           aria-label="Search" th:value="${query}"/>
+                    <input class="form-control me-2" th:type="text" placeholder="Search our menu" name="query"
+                           aria-label="Search" th:value="${query}" required/>
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -25,11 +25,11 @@
 						<a class="btn btn-outline-dark" href="/item/add">Add Item</a>
 						</li>
 						<li class="nav-item p-1">
-						<a class="btn btn-outline-dark" href="/item/orders">Orders</a>
+						<a class="btn btn-outline-dark" href="/user/orders">Orders</a>
 						</li>
 						<li class="nav-item p-1">
 						<form class="inline" th:action="@{/logout}" method="post">
-							<button class="btn btn-outline-dark text-success">Logout</button>
+							<button class="btn btn-outline-dark text-danger">Logout</button>
 						</form>
 						</li>
 					</ul>
@@ -37,11 +37,11 @@
 				<div sec:authorize="hasRole('ROLE_USER')">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item p-1">
-					<a class="btn btn-outline-dark" href="/item/orders">Orders</a>
+					<a class="btn btn-outline-dark" href="/user/orders">Orders</a>
 						</li>
 						<li class="nav-item p-1">
 						<form class="inline" th:action="@{/logout}" method="post">
-							<button class="btn btn-outline-dark text-success">Logout</button>
+							<button class="btn btn-outline-dark text-danger">Logout</button>
 						</form>
 						</li>
 				</ul>

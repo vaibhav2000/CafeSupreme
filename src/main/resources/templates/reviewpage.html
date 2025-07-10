@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ItemUpload</title>
+</head>
+<body>
+<body>
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2>Upload Image Example</h2>
+                <form method="post" th:action="@{/order/review}">
+                    <div class="form-group">
+                        <input name="orderId" type="hidden" th:value="${orderDetails.orderId}">
+                        <input type="text" name="reviewComment" th:value="${reviewDto.reviewComment}" placeholder="Enter your comments"><br>
+                        <input type="number" name="rating" th:value="${reviewDto.rating}" placeholder="Rate between 1 to 5"><br>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Rate order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</body>
+</html>

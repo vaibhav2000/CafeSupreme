@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -40,28 +41,79 @@
 
 <main>
     <section class="py-5 text-center container">
-        <h1 class="text-success">Your orders</h1>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <h1 class="text-success">All orders</h1>
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <h1 class="text-success">Your orders</h1>
+        </div>
+
     </section>
     <div class="album py-5 bg-light">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 g-3">
 
-                <div class="col" th:each="item, stats: ${orderedItems}">
-                    <div class="card shadow-sm">
+                <div class="col" th:each="orderedItem, stats: ${orderedItems}">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-2" style="height: 100px;">
+                                <img class="card-img-top "
+                                     th:src="@{/images/{name}.webp(name=${orderedItem.itemDetails.itemId})}"
+                                     data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+                                     alt="Thumbnail [100%x225]" style="height: 100%; width:auto; display: block;"
+                                     src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22208%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20208%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_191aa00854c%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A11pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_191aa00854c%22%3E%3Crect%20width%3D%22208%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2266.93124771118164%22%20y%3D%22117.54000034332276%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+                                     data-holder-rendered="true">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${orderedItem.itemDetails.itemName}"></h5>
+                                    <p class="card-text">
+                                        <small class="text-success"
+                                               th:text="'To pay :' + ${orderedItem.itemDetails.itemPrice} + ' INR'"></small>
+                                    </p>
+                                </div>
 
-                        <img class="card-img-top" th:src="@{/images/{name}.webp(name=${item.getItemId()})}"
-                             data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
-                             alt="Thumbnail [100%x225]" style="height: 100%; width: 100%; display: block;"
-                             src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22208%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20208%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_191aa00854c%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A11pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_191aa00854c%22%3E%3Crect%20width%3D%22208%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2266.93124771118164%22%20y%3D%22117.54000034332276%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-                             data-holder-rendered="true">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">Order Details</h5>
+                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <p class="card-text"
+                                           th:text="'Ordered at : ' + ${#temporals.format(orderedItem.timeStamp, 'dd-MM-yyyy HH:mm')} + ' by : ' + 	${orderedItem.userDetails.username}"></p>
+                                    </div>
+                                    <div sec:authorize="hasRole('ROLE_USER')">
+                                        <p class="card-text"
+                                           th:text="'Ordered at : ' + ${#temporals.format(orderedItem.timeStamp, 'dd-MM-yyyy HH:mm')}"></p>
+                                    </div>
+                                </div>
 
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${item.getItemName()}"></h5>
-                            <p class="card-text" th:text="${item.getItemDescription()}"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted" th:text="${item.getItemCalories()} + ' Calories'"></small>
-                                <small class="text-muted text-success"
-                                       th:text="${item.getItemPrice()} + ' INR'"></small>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary" th:text="${orderedItem.status}"></h5>
+                                    <div sec:authorize="hasRole('ROLE_USER')">
+										<div th:if="${orderedItem.status.name} == 'FINISHED'">
+                                        <form method="get" th:action="@{/order/review}">
+                                            <input name="orderId" type="hidden" th:value="*{orderedItem.orderId}">
+                                            <button type="submit"
+                                                    class="btn btn-outline-info w-75">Review
+                                            </button>
+                                        </form>
+										</div>
+                                    </div>
+                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <form method="post" th:action="@{/order/update}">
+                                            <input name="orderId" type="hidden" th:value="*{orderedItem.orderId}">
+                                            <button name="submit" type="submit"
+                                                    class="btn btn-sm btn-outline-secondary">Update status
+                                            </button>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+
                             </div>
                         </div>
                     </div>

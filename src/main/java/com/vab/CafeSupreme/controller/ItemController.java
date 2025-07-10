@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
+@RequestMapping("/item")
 public class ItemController {
     @Autowired
     private ItemDetailsService itemDetailsService;
@@ -29,33 +31,7 @@ public class ItemController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/")
-    public String defaultPage() {
-        return "redirect:/home";
-    }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "redirect:/user/login";
-    }
-
-    @GetMapping("/home")
-    public String homePage(@RequestParam(name = "query", required = false) String query, Model model) {
-
-        List<ItemDetails> itemDetailsList = itemDetailsService.getAllItems();
-
-        if (!Objects.isNull(query)) {
-            String finalQuery = query.toLowerCase();
-            itemDetailsList = itemDetailsList.stream().filter(item -> item.getItemName().toLowerCase().contains(finalQuery) ||
-                    item.getItemDescription().toLowerCase().contains(finalQuery)).toList();
-            model.addAttribute("query", query);
-        }
-
-        model.addAttribute("itemList", itemDetailsList);
-        return "homepage.html";
-    }
-
-    @GetMapping("/item/add")
+    @GetMapping("/add")
     public String addItem(Model model) {
 
         UserDetails userDetails = userService.getLoggedInUser();
@@ -67,7 +43,7 @@ public class ItemController {
         return "additem.html";
     }
 
-    @PostMapping("/item/add")
+    @PostMapping("/add")
     public String addItemPost(Model model, @RequestParam("image") MultipartFile file, @ModelAttribute("itemDto") ItemDto itemDto) throws Exception {
 
         ItemDetails itemDetails = new ItemDetails();
@@ -76,33 +52,21 @@ public class ItemController {
         itemDetails.setItemEnabled(true);
         itemDetails.setItemDescription(itemDto.getItemDescription());
         itemDetails.setItemPrice(itemDto.getItemPrice());
-        itemDetails.setRating(5);
+        itemDetails.setRating(5D);
+        itemDetails.setRatingCounter(1);
         itemDetailsService.saveItem(itemDetails, file);
         return "redirect:/home";
     }
 
-    @PostMapping("/item/delete")
+    @PostMapping("/delete")
     public String deleteItem(@RequestParam("itemId") long itemId) {
         itemDetailsService.deleteItem(itemId);
         return "redirect:/home";
     }
 
-    @PostMapping("/item/order")
+    @PostMapping("/order")
     public String orderItem(@RequestParam("itemId") long itemId) {
         orderService.orderItem(itemId);
-        return "redirect:/home";
-    }
-
-    @GetMapping("/item/orders")
-    public String getOrderedItems(Model model) {
-        UserDetails userDetails = userService.getLoggedInUser();
-
-        if (userDetails == null) {
-            return "redirect:/home";
-        }
-
-        //todo put orders in the model instead of items
-        model.addAttribute("orderedItems",userDetails.getOrderDetailsList().stream().map(OrderDetails::getItemDetails).toList());
-        return "orderedItems.html";
+        return "redirect:/user/orders";
     }
 }

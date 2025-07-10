@@ -9,6 +9,7 @@ public class CafeSupremeExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public String handleException(Exception e, Model m)
     {
+    	System.out.println("!!!" + e.getMessage());
         return "errorpage.html";
     }
 }
